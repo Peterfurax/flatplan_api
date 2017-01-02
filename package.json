@@ -1,13 +1,13 @@
 {
-  "name": "cdf_api",
+  "name": "flatplan_api",
   "version": "1.0.0",
-  "description": "",
+  "description": "dev in progress",
   "main": "1.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Peterfurax",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
@@ -15,5 +15,13 @@
     "file-stream-rotator": "0.0.6",
     "mongoose": "^4.4.19",
     "morgan": "^1.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peterfurax/flatplan_api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Peterfurax/flatplan_api/issues"
+  },
+  "homepage": "https://github.com/Peterfurax/flatplan_api#readme"
 }
