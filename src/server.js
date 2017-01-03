@@ -23,22 +23,22 @@ let data = [{
   "parution": [{
     "parution": "20160101",
     "folio": [{
-      "page": 01,
+      "page": "01",
       "status": "locked",
       "workflow": "bat"
     }, {
-      "page": 02,
+      "page": "02",
       "status": "locked",
       "workflow": "bat"
     }]
   }, {
     "parution": "20160102",
     "folio": [{
-      "page": 01,
+      "page": "01",
       "status": "locked",
       "workflow": "bat"
     }, {
-      "page": 02,
+      "page": "02",
       "status": "locked",
       "workflow": "bat"
     }]
@@ -49,22 +49,22 @@ let data = [{
   "parution": [{
     "parution": "20160101",
     "folio": [{
-      "page": 01,
+      "page": "01",
       "status": "locked",
       "workflow": "bat"
     }, {
-      "page": 02,
+      "page": "02",
       "status": "locked",
       "workflow": "bat"
     }]
   }, {
     "parution": "20160102",
     "folio": [{
-      "page": 01,
+      "page": "01",
       "status": "locked",
       "workflow": "bat"
     }, {
-      "page": 02,
+      "page": "02",
       "status": "locked",
       "workflow": "bat"
     }]
