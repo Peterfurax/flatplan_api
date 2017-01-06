@@ -1,11 +1,13 @@
+'use strict';
+
 /*jslint node: true */
 /*jshint esversion: 6 */
 // BASE SETUP
 // =============================================================================
 // call the packages we need
-const express = require('express'); // call express
-const app = express(); // define our app using express
-const bodyParser = require('body-parser');
+var express = require('express'); // call express
+var app = express(); // define our app using express
+var bodyParser = require('body-parser');
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({
@@ -13,11 +15,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.set('json spaces', 2);
-const port = process.env.PORT || 8e3; // set our port
+var port = process.env.PORT || 8e3; // set our port
 // ROUTES FOR OUR API
 // =============================================================================
-const router = express.Router(); // get an instance of the express Router
-let data = [{
+var router = express.Router(); // get an instance of the express Router
+var data = [{
     "produit": "ewe",
     "name": "Les Echos Weekend",
     "parution": [{
@@ -70,10 +72,12 @@ let data = [{
         }]
     }]
 }];
-let productIdx = product => {
-    return new Promise((resolve, reject) => {
+var productIdx = function productIdx(product) {
+    return new Promise(function (resolve, reject) {
         // if (require.resolve('mongoose')) reject('err : mongoose require ');
-        let idx = data.map((el) => el.produit).indexOf(product);
+        var idx = data.map(function (el) {
+            return el.produit;
+        }).indexOf(product);
         if (idx > 0) {
             resolve(idx);
         } else {
@@ -82,57 +86,78 @@ let productIdx = product => {
     });
 };
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', (req, res) => {
+router.get('/', function (req, res) {
     res.json({
         message: 'Welcome on flatplan_api !'
     });
     // res.redirect('https://www.youtube.com/watch?v=3Yfy_QIgpsc');
 });
-router.get('/produit/', (req, res) => {
+router.get('/produit/', function (req, res) {
     res.json(data);
 });
-router.get('/produit/:produit', (req, res) => {
-    productIdx(req.params.produit).then(result => {
+router.get('/produit/:produit', function (req, res) {
+    console.log(productIdx(req.params.produit));
+    // var idx = data.map((el) => el.produit).indexOf(req.params.produit);
+    productIdx(req.params.produit).then(function (result) {
         res.json(data[result]);
-        res.end()
-    }, err => {
-        res.end(err);
-    }).catch(err => {
-        res.end(err);
-    });
+    }, function (err) {
+        res.end();
+    }).catch(function (err) {});
 });
-router.get('/produit/:produit/parution/', (req, res) => {
-    var idx = data.map((el) => el.produit).indexOf(req.params.produit);
+router.get('/produit/:produit/parution/', function (req, res) {
+    var idx = data.map(function (el) {
+        return el.produit;
+    }).indexOf(req.params.produit);
     // var idxparution= data[idxPro].map((el) => el.parution).indexOf(req.params.produit);
     res.json(data[idx].parution);
 });
-router.get('/produit/:produit/parution/:parution', (req, res) => {
+router.get('/produit/:produit/parution/:parution', function (req, res) {
     console.log(req.params);
-    var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-    var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
+    var idx = data.map(function (el) {
+        return el.produit;
+    }).indexOf(req.params.produit);
+    var idxparution = data[idx].parution.map(function (el) {
+        return el.parution;
+    }).indexOf(req.params.parution);
     console.log(idxparution);
     res.json(data[idx].parution[idxparution]);
 });
-router.get('/produit/:produit/parution/:parution/folio', (req, res) => {
+router.get('/produit/:produit/parution/:parution/folio', function (req, res) {
     console.log(req.params);
-    var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-    var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
+    var idx = data.map(function (el) {
+        return el.produit;
+    }).indexOf(req.params.produit);
+    var idxparution = data[idx].parution.map(function (el) {
+        return el.parution;
+    }).indexOf(req.params.parution);
     console.log(idxparution);
     res.json(data[idx].parution[idxparution].folio);
 });
-router.get('/produit/:produit/parution/:parution/folio/:folio', (req, res) => {
+router.get('/produit/:produit/parution/:parution/folio/:folio', function (req, res) {
     console.log(req.params);
-    var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-    var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
-    var idxFolio = data[idx].parution[idxparution].folio.map((el) => el.page).indexOf(Number(req.params.folio));
+    var idx = data.map(function (el) {
+        return el.produit;
+    }).indexOf(req.params.produit);
+    var idxparution = data[idx].parution.map(function (el) {
+        return el.parution;
+    }).indexOf(req.params.parution);
+    var idxFolio = data[idx].parution[idxparution].folio.map(function (el) {
+        return el.page;
+    }).indexOf(Number(req.params.folio));
     console.log(idxFolio);
     res.json(data[idx].parution[idxparution].folio[idxFolio]);
 });
-router.get('/produit/:produit/parution/:parution/folio/:folio/status', (req, res) => {
+router.get('/produit/:produit/parution/:parution/folio/:folio/status', function (req, res) {
     console.log(req.params);
-    var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-    var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
-    var idxFolio = data[idx].parution[idxparution].folio.map((el) => el.page).indexOf(Number(req.params.folio));
+    var idx = data.map(function (el) {
+        return el.produit;
+    }).indexOf(req.params.produit);
+    var idxparution = data[idx].parution.map(function (el) {
+        return el.parution;
+    }).indexOf(req.params.parution);
+    var idxFolio = data[idx].parution[idxparution].folio.map(function (el) {
+        return el.page;
+    }).indexOf(Number(req.params.folio));
     console.log(idxFolio);
     res.json(data[idx].parution[idxparution].folio[idxFolio].status);
 });
