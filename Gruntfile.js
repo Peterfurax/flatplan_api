@@ -1,3 +1,6 @@
+"use strict";
+/*jslint node: true */
+/*jshint esversion: 6 */
 module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
