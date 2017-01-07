@@ -1,8 +1,4 @@
 "use strict";
-// JSLINT OPTION
-// =============================================================================
-/*jslint node: true */
-/*jshint esversion: 6 */
 // BASE SETUP
 // =============================================================================
 // - Call the packages we need
@@ -25,7 +21,9 @@ let lib = [];
 lib.productIdx = product => {
   return new Promise((resolve, reject) => {
     let productIdx = data.map((el) => el.produit).indexOf(product);
-    if (productIdx < 0) reject("lib.productIdx() => Product index not found ");
+    if (productIdx < 0) {
+      reject("lib.productIdx() => Product index not found ");
+    }
     resolve(productIdx);
   });
 };
@@ -41,7 +39,9 @@ lib.productIdx = product => {
 lib.parutionIdx = (productIdx, req) => {
   return new Promise((resolve, reject) => {
     let parutIdx = data[productIdx].parution.map((el) => el.parution).indexOf(req.params.parution);
-    if (parutIdx < 0) reject("lib.parutionIdx() => Parution index not found ");
+    if (parutIdx < 0) {
+      reject("lib.parutionIdx() => Parution index not found ");
+    }
     resolve(parutIdx);
   });
 };

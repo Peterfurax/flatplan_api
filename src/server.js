@@ -1,8 +1,4 @@
 "use strict";
-// JSLINT OPTION
-// =============================================================================
-/*jslint node: true */
-/*jshint esversion: 6 */
 // BASE SETUP
 // =============================================================================
 // - call the packages we need
@@ -36,10 +32,12 @@ app.set('json spaces', 2);
 //  4. end the http  => `res.end();`
 function resErrEnd(err, res) {
   res.status(400);
-  if (typeof err === "string") res.json({
-    "err": err
-  });
-  else res.json(err);
+  if (typeof err === "string") {
+    res.json({
+      "err": err
+    });
+  }
+  else {res.json(err);}
   res.end();
 }
 // API ROUTES

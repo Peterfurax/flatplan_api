@@ -1,6 +1,5 @@
-/*jshint esversion: 6 */
-/*jshint node: true */
-/*jshint expr: true */
+"use strict";
+
 // Require the dev-dependencies
 let fs = require('fs');
 let chai = require('chai');
@@ -12,9 +11,10 @@ let should = chai.should();
 
 function statusHttp(uri, httpReponseCode) {
   return new Promise((resolve, reject) => {
+    if (typeof httpReponseCode !== 'number') {reject('http code must be a number');}
     it('Http status res ' + httpReponseCode + '', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        res.should.have.status(httpReponseCode);
+        resolve(res.should.have.status(httpReponseCode));
         done();
       });
     });
@@ -25,7 +25,7 @@ function beJson(uri) {
   return new Promise((resolve, reject) => {
     it('should be json', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        if (err) reject(err);
+        if (err) {reject(err);}
         resolve(res.should.be.json);
         done();
       });
@@ -37,7 +37,7 @@ function beObject(uri) {
   return new Promise((resolve, reject) => {
     it('should be objet', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        if (err) reject(err);
+        if (err) {reject(err);}
         resolve(res.body.should.be.a('object'));
         done();
       });
@@ -49,7 +49,7 @@ function keyIsString(uri) {
   return new Promise((resolve, reject) => {
     it('should body.message is string', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        if (err) reject(err);
+        if (err) {reject(err);}
         resolve(res.body.message.should.be.a('string'));
         done();
       });
@@ -61,7 +61,7 @@ function bodyHaveProperty(uri, waitProperty) {
   return new Promise((resolve, reject) => {
     it('should have property ' + waitProperty + '', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        if (err) reject(err);
+        if (err) {reject(err);}
         resolve(res.body.should.have.property(waitProperty));
         done();
       });
@@ -73,7 +73,7 @@ function stringIsEqual(uri, waitingMessage) {
   return new Promise((resolve, reject) => {
     it('should message equal = ' + waitingMessage + '', (done) => {
       chai.request(server).get(uri).end((err, res) => {
-        if (err) reject(err);
+        if (err) {reject(err);}
         resolve(res.body.message.should.equal(waitingMessage));
         done();
       });
