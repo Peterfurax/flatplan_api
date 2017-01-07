@@ -16,6 +16,7 @@ install:
   - npm --version
   - npm install
   - npm install -g grunt
+  - npm install -g docco
 before_script:
   - npm run build
 script: npm test
