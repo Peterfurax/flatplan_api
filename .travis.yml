@@ -20,3 +20,4 @@ install:
 before_script:
   - npm run build
 script: npm test
+after_success: npm run coverage
