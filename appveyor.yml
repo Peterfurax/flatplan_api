@@ -8,8 +8,6 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm install
-  - npm install -g docco
-  - npm install -g grunt
 
 # Post-install test scripts.
 test_script:
