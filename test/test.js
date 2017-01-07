@@ -1,5 +1,6 @@
 "use strict";
-
+/*jslint node: true */
+/*jshint esversion: 6 */
 // Require the dev-dependencies
 let fs = require('fs');
 let chai = require('chai');

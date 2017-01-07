@@ -1,4 +1,6 @@
 "use strict";
+/*jslint node: true */
+/*jshint esversion: 6 */
 // BASE SETUP
 // =============================================================================
 // - call the packages we need
