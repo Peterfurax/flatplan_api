@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/server.min.js",
     "watch": "grunt watch",
-    "doc": "docco src/server.js",
+    "doc": "docco src/server.js --layout linear && docco src/lib.js --layout linear",
     "build": "grunt",
     "test": "npm run build && nyc --reporter=html --reporter=text mocha && npm run doc",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

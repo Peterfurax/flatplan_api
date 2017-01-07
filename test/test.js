@@ -1,100 +1,182 @@
 /*jshint esversion: 6 */
 /*jshint node: true */
 /*jshint expr: true */
-
 // Require the dev-dependencies
 let fs = require('fs');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../dist/server.min.js');
+let server = require('../src/server');
+let lib = require('../src/lib');
+// let server = require('../dist/server.min.js');
 let should = chai.should();
 
-function Json200(res) {
-    res.should.have.status(200);
-    res.should.be.json;
-
+function statusHttp(uri, httpReponseCode) {
+  return new Promise((resolve, reject) => {
+    it('Http status res ' + httpReponseCode + '', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        res.should.have.status(httpReponseCode);
+        done();
+      });
+    });
+  });
 }
+
+function beJson(uri) {
+  return new Promise((resolve, reject) => {
+    it('should be json', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        if (err) reject(err);
+        resolve(res.should.be.json);
+        done();
+      });
+    });
+  });
+}
+
+function beObject(uri) {
+  return new Promise((resolve, reject) => {
+    it('should be objet', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body.should.be.a('object'));
+        done();
+      });
+    });
+  });
+}
+
+function keyIsString(uri) {
+  return new Promise((resolve, reject) => {
+    it('should body.message is string', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body.message.should.be.a('string'));
+        done();
+      });
+    });
+  });
+}
+
+function bodyHaveProperty(uri, waitProperty) {
+  return new Promise((resolve, reject) => {
+    it('should have property ' + waitProperty + '', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body.should.have.property(waitProperty));
+        done();
+      });
+    });
+  });
+}
+
+function stringIsEqual(uri, waitingMessage) {
+  return new Promise((resolve, reject) => {
+    it('should message equal = ' + waitingMessage + '', (done) => {
+      chai.request(server).get(uri).end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body.message.should.equal(waitingMessage));
+        done();
+      });
+    });
+  });
+}
+const httpStatus = 200;
+const httpStatusErr = 400;
+const waitErrProperty = 'err';
+const welcomeMessage = 'Welcome on flatplan_api !';
 // During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 // Chai use
 chai.use(chaiHttp);
 describe('Api response ', () => {
-    describe('#GET', () => {
-        it('should not accept GET to : / ', (done) => {
-            chai.request(server)
-                .get('/')
-                .end((err, res) => {
-                    res.should.have.status(404);
-                    done();
-                });
-        });
-        it('should accept GET to : /api ', (done) => {
-            chai.request(server)
-                .get('/api')
-                .end((err, res) => {
-                    Json200(res);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('message');
-                    res.body.message.should.be.a('string');
-                    res.body.message.should.equal('Welcome on flatplan_api !');
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit ', (done) => {
-            chai.request(server)
-                .get('/api/produit')
-                .end((err, res) => {
-                    Json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/sli ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli')
-                .end((err, res) => {
-                    Json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/:produit/parution/ ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli/parution')
-                .end((err, res) => {
-                    Json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/:produit/parution/:parution ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli/parution/20160101')
-                .end((err, res) => {
-                    Json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/:produit/parution/:parution/folio ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli/parution/20160101/folio')
-                .end((err, res) => {
-                    Json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/:produit/parution/:parution/folio/:folio ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli/parution/20160101/folio/01')
-                .end((err, res) => {
-                    json200(res);
-                    done();
-                });
-        });
-        it('should accept GET to : /api/produit/:produit/parution/20160101/folio/01/status ', (done) => {
-            chai.request(server)
-                .get('/api/produit/sli/parution/20160101/folio/01/status')
-                .end((err, res) => {
-                    json200(res);
-                    done();
-                });
-        });
+  describe('#GET', () => {
+    describe('#/', () => {
+      statusHttp('/', 404);
     });
+    describe('#/api', () => {
+      const uri = '/api';
+
+      const waitRep = 'message';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri),
+        beObject(uri),
+        keyIsString(uri),
+        bodyHaveProperty(uri,waitRep),
+        stringIsEqual(uri, welcomeMessage)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('#/api/produit', () => {
+      const uri = '/api/produit';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('#/api/produit/:produit', () => {
+      const uri = '/api/produit/sli';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('ERR #/api/produit/:produit', () => {
+      const uri = '/api/produit/errorPath';
+      Promise.all([
+        statusHttp(uri, httpStatusErr),
+        beJson(uri),
+        bodyHaveProperty(uri,waitErrProperty)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('#/api/produit/:produit/parution', () => {
+      const uri = '/api/produit/sli/parution';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('#/api/produit/:produit/parution/:parution', () => {
+      const uri = '/api/produit/sli/parution/20160101';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('ERR #/api/produit/:produit/parution/:ERR', () => {
+      const uri = '/api/produit/sli/parution/errorDate';
+      Promise.all([
+        statusHttp(uri, httpStatusErr),
+        beJson(uri),
+        bodyHaveProperty(uri,waitErrProperty)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('ERR #/api/produit/:ERR/parution/:ERR', () => {
+      const uri = '/api/produit/errorProduit/parution/errorDate';
+      Promise.all([
+        statusHttp(uri, httpStatusErr),
+        beJson(uri),
+        bodyHaveProperty(uri,waitErrProperty)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    describe('#/api/produit/:produit/parution/:parution/folio', () => {
+      const uri = '/api/produit/sli/parution/20160101/folio';
+      Promise.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ]).then(result => {}, err =>{}).catch(err => {});
+    });
+    // describe('#/api/produit/:produit/parution/:parution/folio', () => {
+    //   it('should accept GET to : /api/produit/:produit/parution/:parution/folio/:folio ', (done) => {
+    //     chai.request(server).get('/api/produit/sli/parution/20160101/folio/01').end((err, res) => {
+    //       done();
+    //     });
+    //   });
+    //   it('should accept GET to : /api/produit/:produit/parution/20160101/folio/01/status ', (done) => {
+    //     chai.request(server).get('/api/produit/sli/parution/20160101/folio/01/status').end((err, res) => {
+    //       done();
+    //     });
+    //   });
+    // });
+    //
+  });
 });
