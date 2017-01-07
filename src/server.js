@@ -16,6 +16,7 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.disable('x-powered-by');
 // - this will let us get the data from a POST
 app.use(bodyParser.json());
 // - configure `app.set()` to indent json with 2 spaces in httpReponse

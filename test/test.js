@@ -1,12 +1,13 @@
 "use strict";
 /*jslint node: true */
 /*jshint esversion: 6 */
+/*jshint expr: true */
 // Require the dev-dependencies
-let fs = require('fs');
+// let fs = require('fs');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../src/server');
-let lib = require('../src/lib');
+// let lib = require('../src/lib');
 // let server = require('../dist/server.min.js');
 let should = chai.should();
 
