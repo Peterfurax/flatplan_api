@@ -2,11 +2,12 @@
   "name": "flatplan_api",
   "version": "1.0.1",
   "description": "dev in progress",
-  "main": "1.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node dist/server.min.js",
+    "start": "node dist/server.js",
+    "cluster": "node dist/cluster.js",
     "watch": "grunt watch",
-    "doc": "docco src/server.js --layout linear && docco src/lib.js --layout linear",
+    "doc": "docco src/server.js --layout linear && docco src/cluster.js --layout linear && docco src/lib/lib.js --layout linear && docco src/provider/data.js --layout linear",
     "build": "grunt",
     "test": "npm run build && nyc --reporter=html --reporter=text mocha && npm run doc",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
@@ -25,12 +26,14 @@
     "docco": "^0.7.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
+    "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.12.2",
     "nyc": "^10.0.0",
+    "recluster": "^0.4.5",
     "webpack": "^2.2.0-rc.3"
   },
   "repository": {
