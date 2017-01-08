@@ -1,3 +1,5 @@
+'use strict';
+let data=[];
 module.exports = data = [{
   "produit": "ewe",
   "name": "Les Echos Weekend",

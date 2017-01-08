@@ -7,8 +7,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const dataFile = require('../src/data');
-const lib = require('../src/lib');
+const dataFile = require('./data');
+const lib = require('./lib');
 const data = dataFile;
 const port = process.env.PORT || 8e3;
 const router = express.Router();
@@ -19,28 +19,31 @@ app.use(bodyParser.urlencoded({
 app.disable('x-powered-by');
 // - this will let us get the data from a POST
 app.use(bodyParser.json());
-// - configure `app.set()` to indent json with 2 spaces in httpReponse
+// - configure `app.set()` to indent json with 2 spaces in httpResponse
 app.set('json spaces', 2);
 // FUNCTION
 // =============================================================================
-//     resErrEnd(err, res);
-// return error
-// - `@method resErrEnd`
-// - `@param  {[any]}          err [captured error]`
-// - `@param  {[httpReponse]}  res [capture res http]`
-// - `@return {[{"err": err}]}     [ & status(400) & end http]`
-//  1. set Http status to 400 (bad request) => `res.status(codeNumber);`
-//  2. if err is string => `{"err": err}`
-//  3. return a json with err => `res.json({err});`
-//  4. end the http  => `res.end();`
-function resErrEnd(err, res) {
+//     errEnd(err, res);
+// return captured error to json httpResponse, status 400, close httpResponse
+//  1. set Http status to `400` (bad request) => `res.status(codeNumber);`
+//  2. if `err` is `string` => `{"err": err}`
+//  3. return a `json` with `err` => `res.json(err);`
+//  4. close http  => `res.end();`
+/**
+ * @method errEnd
+ * @param  {[any]}   err [captured error]
+ * @param  {[array]} res [captured http res]
+ * @return {[json]}      [return http json]
+ */
+function errEnd(err, res) {
   res.status(400);
   if (typeof err === "string") {
     res.json({
       "err": err
     });
+  } else {
+    res.json(err);
   }
-  else {res.json(err);}
   res.end();
 }
 // API ROUTES
@@ -64,54 +67,55 @@ router.get('/produit/:produit', (req, res) => {
   lib.productIdx(req.params.produit).then(productIdx => {
     res.json(data[productIdx]);
     res.end();
-  }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
 });
 // - GET /produit/:produit/parution/
 router.get('/produit/:produit/parution/', (req, res) => {
   lib.productIdx(req.params.produit).then(productIdx => {
     res.json(data[productIdx].parution);
     res.end();
-  }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
 });
 // - GET /produit/:produit/parution/:parution
 router.get('/produit/:produit/parution/:parution', (req, res) => {
   lib.productIdx(req.params.produit).then(productIdx => {
     lib.parutionIdx(productIdx, req).then(parutionIdx => {
       res.json(data[productIdx].parution[parutionIdx]);
-    }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
-  }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
+      res.end();
+    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
 });
 // - GET /produit/:produit/parution/:parution/folio
 router.get('/produit/:produit/parution/:parution/folio', (req, res) => {
   lib.productIdx(req.params.produit).then(productIdx => {
     lib.parutionIdx(productIdx, req).then(parutionIdx => {
       res.json(data[productIdx].parution[parutionIdx].folio);
-    }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
-  }, err => resErrEnd(err, res)).catch(err => resErrEnd(err, res));
+      res.end();
+    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
 });
 // - GET /produit/:produit/parution/:parution/folio/:folio
-// router.get('/produit/:produit/parution/:parution/folio/:folio', (req, res) => {
-//   console.log(req.params);
-//   var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-//   var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
-//   console.log("idxparution", idxparution);
-//   var idxFolio = data[idx].parution[idxparution].folio.map((el) => el.page).indexOf(Number(req.params.folio));
-//   var idxFolio2 = data[idx].parution[idxparution].folio.map((el) => el.page).indexOf("01");
-//   console.log(data[idx].parution[idxparution].folio.map((el) => el.page));
-//   console.log("idxFolio", idxFolio);
-//   console.log("idxFolio2", idxFolio2);
-//   console.log("tata", data[idx].parution[idxparution].folio[idxFolio]);
-//   res.json(data[idx].parution[idxparution].folio[idxFolio]);
-// });
+router.get('/produit/:produit/parution/:parution/folio/:folio', (req, res) => {
+  lib.productIdx(req.params.produit).then(productIdx => {
+    lib.parutionIdx(productIdx, req).then(parutionIdx => {
+      lib.folioIdx(productIdx, parutionIdx, req).then(folioIdx => {
+        res.json(data[productIdx].parution[parutionIdx].folio[folioIdx]);
+        res.end();
+      }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+});
 // - GET /produit/
-// router.get('/produit/:produit/parution/:parution/folio/:folio/status', (req, res) => {
-//   console.log(req.params);
-//   var idx = data.map((el) => el.produit).indexOf(req.params.produit);
-//   var idxparution = data[idx].parution.map((el) => el.parution).indexOf(req.params.parution);
-//   var idxFolio = data[idx].parution[idxparution].folio.map((el) => el.page).indexOf(Number(req.params.folio));
-//   console.log(idxFolio);
-//   res.json(data[idx].parution[idxparution].folio[idxFolio].status);
-// });
+router.get('/produit/:produit/parution/:parution/folio/:folio/status', (req, res) => {
+  lib.productIdx(req.params.produit).then(productIdx => {
+    lib.parutionIdx(productIdx, req).then(parutionIdx => {
+      lib.folioIdx(productIdx, parutionIdx, req).then(folioIdx => {
+        res.json(data[productIdx].parution[parutionIdx].folio[folioIdx].status);
+        res.end();
+      }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
+});
 // REGISTER ROUTE
 // =============================================================================
 // all routes will be prefixed with /api

@@ -21,38 +21,41 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +'<%= grunt.template.today("yyyy-mm-dd") %> */',
-        screwIE8 : true,
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */',
+        screwIE8: true,
         compress: {
           drop_console: true
         }
       },
-      build: {
-        src: 'build/server.js',
-        dest: 'dist/server.min.js'
-      }
+      my_target: {
+        files: [{
+          expand: true,
+          cwd: 'build/',
+          src: '**/*.js',
+          dest: 'dist/'
+        }]
+      },
     },
     watch: {
       files: ['src/server.js'],
       tasks: ['default']
     },
     babel: {
-      "options": {
-        "presets": ['es2015'],
-        "sourceMap": false
+      options: {
+        presets: ['es2015'],
+        sourceMap: false
       },
       dist: {
         files: [{
-          "expand": true,
-          "cwd": "src/",
-          "src": ["**/*.js"],
-          "dest": "build/",
-          "ext": ".js"
+          expand: true,
+          cwd: "src/",
+          src: ["**/*.js"],
+          dest: "build/",
+          ext: ".js"
         }]
       }
     }
   });
-  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
