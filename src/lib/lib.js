@@ -2,18 +2,19 @@
 // BASE SETUP
 // =============================================================================
 // - Call the packages we need
-//  - DataJson
-const dataFile = require('./data');
+const dataFile = require('../provider/data');
 const data = dataFile;
 // INIT LIB
 // =============================================================================
 const lib = [];
 // FUNCTION
 // =============================================================================
-//     productIdx(productIdx, req);
-// return Promise find index from `product:string`
+// productIdx
+// ----------
+//     productIdx(product);
+// Return Promise find index from `product:string`
 /**
- * [productIdx description]
+ * [Return index product]
  * @method productIdx
  * @param  {string}   product [product]
  * @return {Promise}          [index product]
@@ -27,10 +28,12 @@ lib.productIdx = product => {
     resolve(productIdx);
   });
 };
+// parutionIdx
+// ----------
 //     parutionIdx(productIdx, req);
-// return Promise find req.params.parution index from `productIdx:number`
+// Return Promise find req.params.parution index from `productIdx:number`
 /**
- * [parutionIdx return index parution for index product]
+ * [Return index parution for index product]
  * @method parutionIdx
  * @param  {number}    productIdx [index product]
  * @param  {object}    req        [httprequest for inject0 req.params.parution]
@@ -45,10 +48,12 @@ lib.parutionIdx = (productIdx, req) => {
     resolve(parutIdx);
   });
 };
+// folioIdx
+// ----------
 //     folioIdx(productIdx,parutionIdx, req);
-// return Promise find req.params.folio index from` `productIdx:number ` && `parutionIdx:number `
+// Return Promise find req.params.folio index from` `productIdx:number ` && `parutionIdx:number `
 /**
- * [folioIdx description]
+ * [Return return index folio for index product & index parution]
  * @method folioIdx
  * @param  {number} productIdx  [index product]
  * @param  {number} parutionIdx [index parution]
