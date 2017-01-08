@@ -17,6 +17,6 @@ install:
   - npm install -g grunt
   - npm install -g docco
 before_script:
-  - npm run build
+  - npm run grunt
 script: npm test
 after_success: npm run coverage
