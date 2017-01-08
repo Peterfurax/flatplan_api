@@ -3,12 +3,16 @@
 /*jshint esversion: 6 */
 /*jshint expr: true */
 // Require the dev-dependencies
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../src/server.js');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../build/server.js');
+const apiList = require('./provider/apiList');
+const apiListErr = require('./provider/apiListErr');
+const should = chai.should();
 let logData = [];
 let counter = 0;
+const list = apiList;
+const listErr = apiListErr;
 
 function logger(mess) {
   counter += 1;
@@ -107,9 +111,8 @@ const httpStatusErr = 400;
 const httpStatusDrop = 404;
 const waitErrProperty = 'err';
 const welcomeMessage = 'Welcome on flatplan_api !';
-const list = ['/api/produit', '/api/produit/sli', '/api/produit/sli/parution', '/api/produit/sli/parution/20160101', '/api/produit/sli/parution/20160101/folio', '/api/produit/sli/parution/20160101/folio/01', '/api/produit/sli/parution/20160101/folio/01/status'];
-const listErr = ['/api/produit/ERR', '/api/produit/ERR/parution', '/api/produit/sli/parution/ERR', '/api/produit/ERR/parution/20160101', '/api/produit/ERR/parution/ERR', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio/01', '/api/produit/sli/parution/ERR/folio/01', '/api/produit/sli/parution/20160101/folio/ERR', '/api/produit/ERR/parution/ERR/folio/01', '/api/produit/ERR/parution/ERR/folio/ERR', '/api/produit/ERR/parution/20160101/folio/01/status', '/api/produit/sli/parution/ERR/folio/01/status', '/api/produit/sli/parution/20160101/folio/ERR/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/ERR/status'];
-
+// const list = ['/api/produit', '/api/produit/sli', '/api/produit/sli/parution', '/api/produit/sli/parution/20160101', '/api/produit/sli/parution/20160101/folio', '/api/produit/sli/parution/20160101/folio/01', '/api/produit/sli/parution/20160101/folio/01/status'];
+// const listErr = ['/api/produit/ERR', '/api/produit/ERR/parution', '/api/produit/sli/parution/ERR', '/api/produit/ERR/parution/20160101', '/api/produit/ERR/parution/ERR', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio/01', '/api/produit/sli/parution/ERR/folio/01', '/api/produit/sli/parution/20160101/folio/ERR', '/api/produit/ERR/parution/ERR/folio/01', '/api/produit/ERR/parution/ERR/folio/ERR', '/api/produit/ERR/parution/20160101/folio/01/status', '/api/produit/sli/parution/ERR/folio/01/status', '/api/produit/sli/parution/20160101/folio/ERR/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/ERR/status'];
 function getTest() {
   for (var i = 0; i < list.length; i++) {
     const uri = list[i];
