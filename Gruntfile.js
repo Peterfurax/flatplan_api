@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     // dist/<%= pkg.srcfile %>./js
     jshint: {
-      files: ['Gruntfile.js', 'build/server.js', 'build/data.js', 'build/lib.js', 'build/cluster.js'],
+      files: ['Gruntfile.js', 'src/server.js', 'src/provider/data.js', 'src/lib/lib.js', 'src/cluster.js'],
       options: {
         // options here to override JSHint defaults
         node: true,
