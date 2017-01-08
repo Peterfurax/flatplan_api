@@ -7,7 +7,7 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     // dist/<%= pkg.srcfile %>./js
     jshint: {
-      files: ['Gruntfile.js', '<%= pkg.main %>'],
+      files: ['Gruntfile.js', 'build/server.js','build/data.js','build/lib.js','build/cluster.js'],
       options: {
         // options here to override JSHint defaults
         node: true,
@@ -54,12 +54,14 @@ module.exports = function (grunt) {
           ext: ".js"
         }]
       }
-    }
+    },
+    clean: ["build/", "dist/", "docs/", "coverage/"]
   });
   grunt.loadNpmTasks('grunt-babel');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'babel', 'uglify']);
+  grunt.registerTask('default', ['clean','jshint', 'babel', 'uglify']);
 };
