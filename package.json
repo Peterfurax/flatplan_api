@@ -2,7 +2,7 @@
   "name": "flatplan_api",
   "version": "1.0.1",
   "description": "dev in progress",
-  "main": "dist/server.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "node dist/server.js",
     "cluster": "node dist/cluster.js",
