@@ -1,12 +1,13 @@
 {
   "name": "flatplan_api",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "dev in progress",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "cluster": "node dist/cluster.js",
     "watch": "grunt watch",
+    "watchdev": "nodenon src/server.js",
     "doc": "docco src/server.js --layout linear && docco src/cluster.js --layout linear && docco src/lib/lib.js --layout linear && docco src/provider/data.js --layout linear",
     "grunt": "grunt",
     "test": "npm run grunt && nyc --reporter=html --reporter=text mocha && npm run doc",

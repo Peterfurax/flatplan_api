@@ -27,8 +27,7 @@ app.set('json spaces', 2);
 //     errEnd(err, res);
 // return captured error to json httpResponse, status 400
 //  1. set Http status to `400` (bad request) => `res.status(codeNumber);`
-//  2. if `err` is `string` => `{"err": err}`
-//  3. return a `json` with `err` => `res.json(err);``
+//  2. return a `json` with `err` => `res.json(err);``
 /**
  * @method errEnd
  * @param  {[any]}   err [captured error]
@@ -36,82 +35,112 @@ app.set('json spaces', 2);
  * @return {[json]}      [return http json]
  */
 function errEnd(err, res) {
-  // if (typeof err === "string") {
-  //   res.json({
-  //     "err": err
-  //   });
-  // } else {
-  //   res.json(err);
-  // }
-  res.status(400);
-  res.json({
-    "err": err
-  });
+  res.status(400)
+    .json({ "err": err });
+}
+//     errEnd(err, res);
+// return captured error to json httpResponse, status 400
+//  1. set Http status to `400` (bad request) => `res.status(codeNumber);`
+//  2. return a `json` with `err` => `res.json(err);``
+/**
+ * @method errEnd
+ * @param  {[any]}   err [captured error]
+ * @param  {[array]} res [captured http res]
+ * @return {[json]}      [return http json]
+ */
+function capturePut(req, res) {
+  console.log(req.params);
+  res.json(req.params);
 }
 // API ROUTES
 // =============================================================================
 // - Here all the api route, get, post, put, delete
 //
-// GET ROUTES
+// ROUTES /
 // -----
-//  - GET /
-router.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome on flatplan_api !'
+router.route('/')
+  .get((req, res) => {
+    res.json({ message: 'Welcome on flatplan_api !' });
   });
-});
-// - GET /produit/
-router.get('/produit/', (req, res) => {
-  res.json(data);
-});
+// ROUTES /produit/
+// -----
+router.route('/produit/')
+  .get((req, res) => {
+    res.json(data);
+  });
 // - GET /produit/:produit
-router.get('/produit/:produit', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    res.json(data[productIdx]);
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
+router.route('/produit/:produit')
+  .get((req, res) => {
+    lib.productIdx(req.params.produit)
+      .then(productIdx => {
+        res.json(data[productIdx]);
+      })
+      .catch(err => errEnd(err, res));
+  })
+  .put((req, res) => capturePut(req, res));
 // - GET /produit/:produit/parution/
-router.get('/produit/:produit/parution/', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    res.json(data[productIdx].parution);
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
+router.route('/produit/:produit/parution/')
+  .get((req, res) => {
+    lib.productIdx(req.params.produit)
+      .then(productIdx => {
+        res.json(data[productIdx].parution);
+      })
+      .catch(err => errEnd(err, res));
+  });
 // - GET /produit/:produit/parution/:parution
-router.get('/produit/:produit/parution/:parution', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    lib.parutionIdx(productIdx, req).then(parutionIdx => {
-      res.json(data[productIdx].parution[parutionIdx]);
-    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
+router.route('/produit/:produit/parution/:parution')
+  .get((req, res) => {
+    lib.productParution(req)
+      .then(result => {
+        res.json(data[result.productIdx].parution[result.parutionIdx]);
+      })
+      .catch(err => { errEnd(err, res); });
+  })
+  .put((req, res) => capturePut(req, res));
 // - GET /produit/:produit/parution/:parution/folio
-router.get('/produit/:produit/parution/:parution/folio', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    lib.parutionIdx(productIdx, req).then(parutionIdx => {
-      res.json(data[productIdx].parution[parutionIdx].folio);
-    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
+router.route('/produit/:produit/parution/:parution/folio')
+  .get((req, res) => {
+    lib.productParution(req)
+      .then(result => {
+        res.json(data[result.productIdx].parution[result.parutionIdx].folio);
+      })
+      .catch(err => { errEnd(err, res); });
+  });
+router.route('/produit/:produit/parution/:parution/folio/:folio')
+  .get((req, res) => {
+    lib.productParutionFolio(req)
+      .then(result => {
+        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx]);
+      })
+      .catch(err => { errEnd(err, res); });
+  })
+  .put((req, res) => {
+    lib.productParutionFolio(req)
+      .then(result => {
+        data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].page = req.params.folio;
+        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx]);
+      })
+      .catch(err => { errEnd(err); });
+  });
+router.route('/produit/:produit/parution/:parution/folio/:folio/status')
+  .get((req, res) => {
+    lib.productParutionFolio(req)
+      .then(result => {
+        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].status);
+      })
+      .catch(err => { errEnd(err, res); });
+  });
 // - GET /produit/:produit/parution/:parution/folio/:folio
-router.get('/produit/:produit/parution/:parution/folio/:folio', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    lib.parutionIdx(productIdx, req).then(parutionIdx => {
-      lib.folioIdx(productIdx, parutionIdx, req).then(folioIdx => {
-        res.json(data[productIdx].parution[parutionIdx].folio[folioIdx]);
-      }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
-// - GET /produit/
-router.get('/produit/:produit/parution/:parution/folio/:folio/status', (req, res) => {
-  lib.productIdx(req.params.produit).then(productIdx => {
-    lib.parutionIdx(productIdx, req).then(parutionIdx => {
-      lib.folioIdx(productIdx, parutionIdx, req).then(folioIdx => {
-        res.json(data[productIdx].parution[parutionIdx].folio[folioIdx].status);
-      }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-    }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-  }, err => errEnd(err, res)).catch(err => errEnd(err, res));
-});
+//
+router.route('/produit/:produit/parution/:parution/folio/:folio/status/:status')
+  .put((req, res) => {
+    lib.productParutionFolio(req)
+      .then(result => {
+        data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].status = req.params.status;
+        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].status);
+      })
+      .catch(err => { errEnd(err); });
+  });
 // REGISTER ROUTE
 // =============================================================================
 // all routes will be prefixed with /api
@@ -134,6 +163,6 @@ module.exports = app;
 //
 //
 // easter eggs
-// router.get('/eggs', (req, res) => {
+// router.route('/eggs', (req, res) => {
 //  res.redirect('https://www.youtube.com/watch?v=3Yfy_QIgpsc');
 // });
