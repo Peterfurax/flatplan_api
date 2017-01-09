@@ -1,5 +1,5 @@
 "use strict";
-let apiList = [];
+let getTest = [];
 const productArr = ["/sli", "/ewe"];
 const parutionArr = ["/20160101", "/20160102"];
 const folioArr = ["/01", "/02"]
@@ -10,22 +10,22 @@ const folioPath = "/folio";
 const statusPath = "/status";
 
 function makeListing() {
-  apiList.push(oriPath + produitPath);
+  getTest.push(oriPath + produitPath);
   for (let a = 0; a < productArr.length; a++) {
-    apiList.push(oriPath + produitPath + productArr[a]);
+    getTest.push(oriPath + produitPath + productArr[a]);
     for (let b = 0; b < parutionArr.length; b++) {
-      apiList.push(oriPath + produitPath + productArr[a] + parutionPath);
-      apiList.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b]);
+      getTest.push(oriPath + produitPath + productArr[a] + parutionPath);
+      getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b]);
       for (let c = 0; c < folioArr.length; c++) {
-        apiList.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath);
-        apiList.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c]);
-        apiList.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c] + statusPath);
+        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath);
+        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c]);
+        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c] + statusPath);
       }
     }
   }
 }
 makeListing();
-// console.log(apiList);
+// console.log(getTest);
 // [ '/api/produit',
 //   '/api/produit/sli',
 //   '/api/produit/sli/parution',
@@ -53,4 +53,4 @@ makeListing();
 //   '/api/produit/ewe/parution/20160102/folio/01/status',
 //   '/api/produit/ewe/parution/20160102/folio/02',
 //   '/api/produit/ewe/parution/20160102/folio/02/status' ]
-module.exports = apiList;
+module.exports = getTest;

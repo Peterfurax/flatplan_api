@@ -1,5 +1,5 @@
 "use strict";
-let apiList = [];
+let getTestErr = [];
 const errTest = ["/err"];
 const productArr = ["/sli"];
 const parutionArr = ["/20160101"];
@@ -16,30 +16,30 @@ const alphaPath = oriPath + produitPath;
 
 function makeListing() {
   // '/api/produit/ERR'
-  apiList.push(oriPath + produitPath + errTest);
+  getTestErr.push(oriPath + produitPath + errTest);
   for (let a = 0; a < productArr.length; a++) {
     for (let b = 0; b < parutionArr.length; b++) {
       // PARUTION
       // -----
       // '/api/produit/ERR/parution'
-      apiList.push(alphaPath + errTest + parutionPath);
+      getTestErr.push(alphaPath + errTest + parutionPath);
       // '/api/produit/sli/parution/ERR'
-      apiList.push(alphaPath + productArr[a] + parutionPath + errTest);
+      getTestErr.push(alphaPath + productArr[a] + parutionPath + errTest);
       for (let c = 0; c < folioArr.length; c++) {
         // FOLIOS
         // -----
         // '/api/produit/sli/parution/ERR/folio'
-        apiList.push(alphaPath + productArr[a] + parutionPath + errTest + folioPath);
+        getTestErr.push(alphaPath + productArr[a] + parutionPath + errTest + folioPath);
         // PAGES
         // -----
         // '/api/produit/sli/parution/20160101/folio/ERR'
-        apiList.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + errTest);
+        getTestErr.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + errTest);
       }
     }
   }
 }
 makeListing();
-console.log(apiList);
+console.log(getTestErr);
 // return example
 // ----
 // `[ '/api/produit/err',
@@ -48,4 +48,4 @@ console.log(apiList);
 //   '/api/produit/sli/parution/err/folio',
 //   '/api/produit/sli/parution/20160101/folio/err',
 //   '/api/produit/err/parution/err/folio/01/status' ]`
-module.exports = apiList;
+module.exports = getTestErr;
