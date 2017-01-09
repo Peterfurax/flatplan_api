@@ -55,7 +55,8 @@ module.exports = function (grunt) {
         }]
       }
     },
-    clean: ["build/", "dist/", "docs/", "coverage/"]
+    clean: ["build/", "dist/", "docs/"]
+    // clean: ["build/", "dist/", "docs/", "coverage/"]
   });
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-contrib-clean');

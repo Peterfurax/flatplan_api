@@ -21,7 +21,8 @@ const lib = [];
  */
 lib.productIdx = product => {
   return new Promise((resolve, reject) => {
-    const productIdx = data.map((el) => el.produit).indexOf(product);
+    const productIdx = data.map((el) => el.produit)
+      .indexOf(product);
     if (productIdx < 0) {
       reject("lib.productIdx() => Product index not found ");
     }
@@ -41,7 +42,8 @@ lib.productIdx = product => {
  */
 lib.parutionIdx = (productIdx, req) => {
   return new Promise((resolve, reject) => {
-    const parutIdx = data[productIdx].parution.map((el) => el.parution).indexOf(req.params.parution);
+    const parutIdx = data[productIdx].parution.map((el) => el.parution)
+      .indexOf(req.params.parution);
     if (parutIdx < 0) {
       reject("lib.parutionIdx() => Parution index not found ");
     }
@@ -62,11 +64,62 @@ lib.parutionIdx = (productIdx, req) => {
  */
 lib.folioIdx = (productIdx, parutionIdx, req) => {
   return new Promise((resolve, reject) => {
-    const folioIdx = data[productIdx].parution[parutionIdx].folio.map((el) => el.page).indexOf(req.params.folio);
+    const folioIdx = data[productIdx].parution[parutionIdx].folio.map((el) => el.page)
+      .indexOf(req.params.folio);
     if (folioIdx < 0) {
       reject("lib.folioIdx() => folio index not found ");
     }
     resolve(folioIdx);
+  });
+};
+// productParution
+// ----------
+//     productParution(req);
+// Return Promise `{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }`
+/**
+ * [productParution return object with Product et Parution index]
+ * @method productParution
+ * @param  {object}        req [request]
+ * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }]
+ */
+lib.productParution = (req) => {
+  return new Promise((resolve, reject) => {
+    lib.productIdx(req.params.produit)
+      .then(productIdx => {
+        lib.parutionIdx(productIdx, req)
+          .then(parutionIdx => {
+            resolve({ 'productIdx': productIdx, 'parutionIdx': parutionIdx });
+          })
+          .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
+  });
+};
+// productParutionFolio
+// ----------
+//     productParutionFolio(req);
+// Return Promise `{ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }`
+/**
+ * [productParutionFolio return object with Product & Parution index & Folio index]
+ * @method productParutionFolio
+ * @param  {object}        req [request]
+ * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }]
+ */
+lib.productParutionFolio = (req) => {
+  return new Promise((resolve, reject) => {
+    lib.productIdx(req.params.produit)
+      .then(productIdx => {
+        lib.parutionIdx(productIdx, req)
+          .then(parutionIdx => {
+            lib.folioIdx(productIdx, parutionIdx, req)
+              .then(folioIdx => {
+                resolve({ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx });
+              })
+              .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
   });
 };
 // EXPORT LIB // DEBUG SUPPORT
