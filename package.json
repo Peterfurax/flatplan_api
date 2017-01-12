@@ -40,7 +40,8 @@
     "postlints": "echo ----- LINT FINISH -----",
     "postuglifys": "echo ----- DOC UGLIFY -----",
     "uglifys": "npm-run-all uglify:server",
-    "uglify:server": "uglifyjs --compress -- build/server.js"
+    "uglify:server": "uglifyjs --compress -- build/server.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Peterfurax",
   "license": "ISC",
