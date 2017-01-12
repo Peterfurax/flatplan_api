@@ -1,9 +1,14 @@
+// INIT FILE SETUP
+// =============================================================================
+// - use strict option
 "use strict";
+// - jslint option
 /*jslint node: true */
 /*jshint esversion: 6 */
-// BASE SETUP
+// REQUIRE
 // =============================================================================
 // - call the packages we need
+// - must have to go !
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -38,16 +43,8 @@ function errEnd(err, res) {
   res.status(400)
     .json({ "err": err });
 }
-//     errEnd(err, res);
-// return captured error to json httpResponse, status 400
-//  1. set Http status to `400` (bad request) => `res.status(codeNumber);`
-//  2. return a `json` with `err` => `res.json(err);``
-/**
- * @method errEnd
- * @param  {[any]}   err [captured error]
- * @param  {[array]} res [captured http res]
- * @return {[json]}      [return http json]
- */
+// TODO: capture all put
+// temp fonction
 function capturePut(req, res) {
   console.log(req.params);
   res.json(req.params);
@@ -56,19 +53,23 @@ function capturePut(req, res) {
 // =============================================================================
 // - Here all the api route, get, post, put, delete
 //
-// ROUTES /
+// /
 // -----
+// - `get`
 router.route('/')
   .get((req, res) => {
     res.json({ message: 'Welcome on flatplan_api !' });
   });
-// ROUTES /produit/
+// /produit/
 // -----
+// - `get`
 router.route('/produit/')
   .get((req, res) => {
     res.json(data);
   });
-// - GET /produit/:produit
+// /produit/:produit
+// -----
+// - `get`
 router.route('/produit/:produit')
   .get((req, res) => {
     lib.productIdx(req.params.produit)
@@ -78,7 +79,9 @@ router.route('/produit/:produit')
       .catch(err => errEnd(err, res));
   })
   .put((req, res) => capturePut(req, res));
-// - GET /produit/:produit/parution/
+// /produit/:produit/parution/
+// -----
+// - `get`
 router.route('/produit/:produit/parution/')
   .get((req, res) => {
     lib.productIdx(req.params.produit)
@@ -87,7 +90,9 @@ router.route('/produit/:produit/parution/')
       })
       .catch(err => errEnd(err, res));
   });
-// - GET /produit/:produit/parution/:parution
+// /produit/:produit/parution/:parution
+// -----
+// - `get`
 router.route('/produit/:produit/parution/:parution')
   .get((req, res) => {
     lib.productParution(req)
@@ -97,7 +102,9 @@ router.route('/produit/:produit/parution/:parution')
       .catch(err => { errEnd(err, res); });
   })
   .put((req, res) => capturePut(req, res));
-// - GET /produit/:produit/parution/:parution/folio
+// /produit/:produit/parution/:parution/folio
+// -----
+// - `get`
 router.route('/produit/:produit/parution/:parution/folio')
   .get((req, res) => {
     lib.productParution(req)
@@ -106,6 +113,9 @@ router.route('/produit/:produit/parution/:parution/folio')
       })
       .catch(err => { errEnd(err, res); });
   });
+// /produit/:produit/parution/:parution/folio/:folio
+// -----
+// TODO: find good wa
 router.route('/produit/:produit/parution/:parution/folio/:folio')
   .get((req, res) => {
     lib.productParutionFolio(req)
@@ -114,6 +124,7 @@ router.route('/produit/:produit/parution/:parution/folio/:folio')
       })
       .catch(err => { errEnd(err, res); });
   })
+  // - `put` update folio
   .put((req, res) => {
     lib.productParutionFolio(req)
       .then(result => {
@@ -122,6 +133,9 @@ router.route('/produit/:produit/parution/:parution/folio/:folio')
       })
       .catch(err => { errEnd(err); });
   });
+// /produit/:produit/parution/:parution/folio/:folio/status
+// -----
+// - `get` status of folio
 router.route('/produit/:produit/parution/:parution/folio/:folio/status')
   .get((req, res) => {
     lib.productParutionFolio(req)
@@ -130,8 +144,9 @@ router.route('/produit/:produit/parution/:parution/folio/:folio/status')
       })
       .catch(err => { errEnd(err, res); });
   });
-// - GET /produit/:produit/parution/:parution/folio/:folio
-//
+// /produit/:produit/parution/:parution/folio/:folio/status/:status
+// ------
+// - `put` update status false === locked or true === unlocked
 router.route('/produit/:produit/parution/:parution/folio/:folio/status/:status')
   .put((req, res) => {
     lib.productParutionFolio(req)
