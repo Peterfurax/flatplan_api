@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>INIT FILE SETUP</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          
+          <h1 id="init-file-setup">INIT FILE SETUP</h1>
+<ul>
+<li>use strict option</li>
+</ul>
+
+          
+            <div class='highlight'><pre><span class="hljs-meta">"use strict"</span>;
+<span class="hljs-keyword">let</span> getTest = [];
+<span class="hljs-keyword">const</span> productArr = [<span class="hljs-string">"/sli"</span>, <span class="hljs-string">"/ewe"</span>];
+<span class="hljs-keyword">const</span> parutionArr = [<span class="hljs-string">"/20160101"</span>, <span class="hljs-string">"/20160102"</span>];
+<span class="hljs-keyword">const</span> folioArr = [<span class="hljs-string">"/01"</span>, <span class="hljs-string">"/02"</span>];
+<span class="hljs-keyword">const</span> oriPath = <span class="hljs-string">"/api"</span>;
+<span class="hljs-keyword">const</span> produitPath = <span class="hljs-string">"/produit"</span>;
+<span class="hljs-keyword">const</span> parutionPath = <span class="hljs-string">"/parution"</span>;
+<span class="hljs-keyword">const</span> folioPath = <span class="hljs-string">"/folio"</span>;
+<span class="hljs-keyword">const</span> statusPath = <span class="hljs-string">"/status"</span>;
+<span class="hljs-keyword">const</span> alphaPath = oriPath + produitPath;</pre></div>
+          
+        
+
+        
+      </div>
+
+      
+        
+        <h1 id="function">FUNCTION</h1>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [make a Listing test path]
+ * @method makeListing
+ * @return {Object}    ['stringPath',...]
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeListing</span>(<span class="hljs-params"></span>) </span>{</pre></div>
+        
+      
+        
+        <h2 id="api-welcome">API WELCOME</h2>
+<p>‘/api/‘</p>
+
+        
+          <div class='highlight'><pre>  getTest.push(alphaPath);
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> a = <span class="hljs-number">0</span>; a &lt; productArr.length; a++) {</pre></div>
+        
+      
+        
+        <h2 id="produit">PRODUIT</h2>
+<p>‘/api/produit/sli’</p>
+
+        
+          <div class='highlight'><pre>    getTest.push(alphaPath + productArr[a]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> b = <span class="hljs-number">0</span>; b &lt; parutionArr.length; b++) {</pre></div>
+        
+      
+        
+        <h2 id="parution">PARUTION</h2>
+<p>‘/api/produit/sli/parution’</p>
+
+        
+          <div class='highlight'><pre>      getTest.push(alphaPath + productArr[a] + parutionPath);
+      getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b]);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> c = <span class="hljs-number">0</span>; c &lt; folioArr.length; c++) {</pre></div>
+        
+      
+        
+        <h2 id="folios">FOLIOS</h2>
+<p>‘/api/produit/sli/parution/ERR/folio’</p>
+
+        
+          <div class='highlight'><pre>        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath);
+        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c]);
+        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c] + statusPath);
+      }
+    }
+  }
+}
+makeListing();</pre></div>
+        
+      
+        
+        <p>console.log(getTest);
+[ ‘/api/produit’,
+  ‘/api/produit/sli’,
+  ‘/api/produit/sli/parution’,
+  ‘/api/produit/sli/parution/20160101’,
+  ‘/api/produit/sli/parution/20160101/folio/01’,
+  ‘/api/produit/sli/parution/20160101/folio/01/status’,
+  ‘/api/produit/sli/parution/20160101/folio/02’,
+  ‘/api/produit/sli/parution/20160101/folio/02/status’,
+  ‘/api/produit/sli/parution’,
+  ‘/api/produit/sli/parution/20160102’,
+  ‘/api/produit/sli/parution/20160102/folio/01’,
+  ‘/api/produit/sli/parution/20160102/folio/01/status’,
+  ‘/api/produit/sli/parution/20160102/folio/02’,
+  ‘/api/produit/sli/parution/20160102/folio/02/status’,
+  ‘/api/produit/ewe’,
+  ‘/api/produit/ewe/parution’,
+  ‘/api/produit/ewe/parution/20160101’,
+  ‘/api/produit/ewe/parution/20160101/folio/01’,
+  ‘/api/produit/ewe/parution/20160101/folio/01/status’,
+  ‘/api/produit/ewe/parution/20160101/folio/02’,
+  ‘/api/produit/ewe/parution/20160101/folio/02/status’,
+  ‘/api/produit/ewe/parution’,
+  ‘/api/produit/ewe/parution/20160102’,
+  ‘/api/produit/ewe/parution/20160102/folio/01’,
+  ‘/api/produit/ewe/parution/20160102/folio/01/status’,
+  ‘/api/produit/ewe/parution/20160102/folio/02’,
+  ‘/api/produit/ewe/parution/20160102/folio/02/status’ ]</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = getTest;</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

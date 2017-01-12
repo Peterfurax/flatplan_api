@@ -6,7 +6,7 @@
 // Require the dev-dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../dist/server.js');
+const server = require('../build/server.js');
 const getTest = require('./provider/getTest');
 const getTestErr = require('./provider/getTestErr');
 const should = chai.should();
@@ -139,8 +139,12 @@ const httpStatus = 200;
 const httpStatusErr = 400;
 const httpStatusDrop = 404;
 const welcomeMessage = 'Welcome on flatplan_api !';
-const testPutArr = ['/api/produit/sli', '/api/produit/sli/parution/20160101', '/api/produit/sli/parution/20160101/folio/01', '/api/produit/sli/parution/20160101/folio/01/status/newStatus'];
-// const testGetArrErr = ['/api/produit/ERR', '/api/produit/ERR/parution', '/api/produit/sli/parution/ERR', '/api/produit/ERR/parution/20160101', '/api/produit/ERR/parution/ERR', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio', '/api/produit/sli/parution/ERR/folio', '/api/produit/ERR/parution/ERR/folio', '/api/produit/ERR/parution/20160101/folio/01', '/api/produit/sli/parution/ERR/folio/01', '/api/produit/sli/parution/20160101/folio/ERR', '/api/produit/ERR/parution/ERR/folio/01', '/api/produit/ERR/parution/ERR/folio/ERR', '/api/produit/ERR/parution/20160101/folio/01/status', '/api/produit/sli/parution/ERR/folio/01/status', '/api/produit/sli/parution/20160101/folio/ERR/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/01/status', '/api/produit/ERR/parution/ERR/folio/ERR/status'];
+const testPutArr = [
+'/api/produit/sli',
+'/api/produit/sli/parution/20160101',
+'/api/produit/sli/parution/20160101/folio/01',
+'/api/produit/sli/parution/20160101/folio/01/status/newStatus'];
+
 function putTest() {
   for (var i = 0; i < testPutArr.length; i++) {
     const uri = testPutArr[i];
@@ -186,7 +190,7 @@ process.env.NODE_ENV = 'test';
 // Chai use
 chai.use(chaiHttp);
 describe('Api response ', () => {
-  describe('#GET', () => {
+  describe('#PATH', () => {
     describe('#/', () => {
       statusHttp('/', httpStatusDrop)
         .then(result => logger(result), err => logger(err))
@@ -206,8 +210,12 @@ describe('Api response ', () => {
         .then(result => logger(result), err => logger(err))
         .catch(err => logger(err));
     });
-    getTestArr();
-    getTestErrArr();
-    putTest();
+    Promise.all([
+      getTestArr(),
+      getTestErrArr(),
+      putTest()
+    ])
+      .then(result => logger(result), err => logger(err))
+      .catch(err => logger(err));
   });
 });

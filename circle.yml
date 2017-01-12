@@ -6,4 +6,3 @@ test:
 dependencies:
   override:
     - npm install
-    - npm run grunt

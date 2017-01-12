@@ -1,25 +1,47 @@
+// INIT FILE SETUP
+// =============================================================================
+// - use strict option
 "use strict";
 let getTest = [];
 const productArr = ["/sli", "/ewe"];
 const parutionArr = ["/20160101", "/20160102"];
-const folioArr = ["/01", "/02"]
+const folioArr = ["/01", "/02"];
 const oriPath = "/api";
 const produitPath = "/produit";
 const parutionPath = "/parution";
 const folioPath = "/folio";
 const statusPath = "/status";
-
+const alphaPath = oriPath + produitPath;
+// FUNCTION
+// =============================================================================
+/**
+ * [make a Listing test path]
+ * @method makeListing
+ * @return {Object}    ['stringPath',...]
+ */
 function makeListing() {
-  getTest.push(oriPath + produitPath);
+  // API WELCOME
+  // -----
+  // '/api/'
+  getTest.push(alphaPath);
   for (let a = 0; a < productArr.length; a++) {
-    getTest.push(oriPath + produitPath + productArr[a]);
+    // PRODUIT
+    // -----
+    // '/api/produit/sli'
+    getTest.push(alphaPath + productArr[a]);
     for (let b = 0; b < parutionArr.length; b++) {
-      getTest.push(oriPath + produitPath + productArr[a] + parutionPath);
-      getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b]);
+      // PARUTION
+      // -----
+      // '/api/produit/sli/parution'
+      getTest.push(alphaPath + productArr[a] + parutionPath);
+      getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b]);
       for (let c = 0; c < folioArr.length; c++) {
-        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath);
-        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c]);
-        getTest.push(oriPath + produitPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c] + statusPath);
+        // FOLIOS
+        // -----
+        // '/api/produit/sli/parution/ERR/folio'
+        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath);
+        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c]);
+        getTest.push(alphaPath + productArr[a] + parutionPath + parutionArr[b] + folioPath + folioArr[c] + statusPath);
       }
     }
   }

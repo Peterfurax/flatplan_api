@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>BASE SETUP</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          
+          
+          
+            <div class='highlight'><pre><span class="hljs-meta">"use strict"</span>;</pre></div>
+          
+        
+
+        
+      </div>
+
+      
+        
+        <h1 id="base-setup">BASE SETUP</h1>
+<ul>
+<li>Call the packages we need</li>
+</ul>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> dataFile = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../provider/data'</span>);
+<span class="hljs-keyword">const</span> data = dataFile;</pre></div>
+        
+      
+        
+        <h1 id="init-lib">INIT LIB</h1>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> lib = [];</pre></div>
+        
+      
+        
+        <h1 id="function">FUNCTION</h1>
+<h2 id="productidx">productIdx</h2>
+<pre><code>productIdx(product);
+</code></pre><p>Return Promise find index from <code>product:string</code></p>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [Return index product]
+ * @method productIdx
+ * @param  {string}   product [product]
+ * @return {Promise}          [index product]
+ */</span>
+lib.productIdx = <span class="hljs-function"><span class="hljs-params">product</span> =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> productIdx = data.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.produit)
+      .indexOf(product);
+    <span class="hljs-keyword">if</span> (productIdx &lt; <span class="hljs-number">0</span>) {
+      reject(<span class="hljs-string">"lib.productIdx() =&gt; Product index not found "</span>);
+    }
+    resolve(productIdx);
+  });
+};</pre></div>
+        
+      
+        
+        <h2 id="parutionidx">parutionIdx</h2>
+<pre><code>parutionIdx(productIdx, req);
+</code></pre><p>Return Promise find req.params.parution index from <code>productIdx:number</code></p>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [Return index parution for index product]
+ * @method parutionIdx
+ * @param  {number}    productIdx [index product]
+ * @param  {object}    req        [httprequest for inject0 req.params.parution]
+ * @return {Promise}              [index parution]
+ */</span>
+lib.parutionIdx = <span class="hljs-function">(<span class="hljs-params">productIdx, req</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> parutIdx = data[productIdx].parution.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.parution)
+      .indexOf(req.params.parution);
+    <span class="hljs-keyword">if</span> (parutIdx &lt; <span class="hljs-number">0</span>) {
+      reject(<span class="hljs-string">"lib.parutionIdx() =&gt; Parution index not found "</span>);
+    }
+    resolve(parutIdx);
+  });
+};</pre></div>
+        
+      
+        
+        <h2 id="folioidx">folioIdx</h2>
+<pre><code>folioIdx(productIdx,parutionIdx, req);
+</code></pre><p>Return Promise find req.params.folio index from<code>`productIdx:number</code> &amp;&amp; <code>parutionIdx:number</code></p>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [Return return index folio for index product &amp; index parution]
+ * @method folioIdx
+ * @param  {number} productIdx  [index product]
+ * @param  {number} parutionIdx [index parution]
+ * @param  {object} req         [httprequest req.params.folio ]
+ * @return {Promise}            [index folio]
+ */</span>
+lib.folioIdx = <span class="hljs-function">(<span class="hljs-params">productIdx, parutionIdx, req</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> folioIdx = data[productIdx].parution[parutionIdx].folio.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.page)
+      .indexOf(req.params.folio);
+    <span class="hljs-keyword">if</span> (folioIdx &lt; <span class="hljs-number">0</span>) {
+      reject(<span class="hljs-string">"lib.folioIdx() =&gt; folio index not found "</span>);
+    }
+    resolve(folioIdx);
+  });
+};</pre></div>
+        
+      
+        
+        <h2 id="productparution">productParution</h2>
+<pre><code>productParution(req);
+</code></pre><p>Return Promise <code>{ &#39;productIdx&#39;: productIdx, &#39;parutionIdx&#39;: parutionIdx }</code></p>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [productParution return object with Product et Parution index]
+ * @method productParution
+ * @param  {object}        req [request]
+ * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }]
+ */</span>
+lib.productParution = <span class="hljs-function">(<span class="hljs-params">req</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    lib.productIdx(req.params.produit)
+      .then(<span class="hljs-function"><span class="hljs-params">productIdx</span> =&gt;</span> {
+        lib.parutionIdx(productIdx, req)
+          .then(<span class="hljs-function"><span class="hljs-params">parutionIdx</span> =&gt;</span> {
+            resolve({ <span class="hljs-string">'productIdx'</span>: productIdx, <span class="hljs-string">'parutionIdx'</span>: parutionIdx });
+          })
+          .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> reject(err));
+      })
+      .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> reject(err));
+  });
+};</pre></div>
+        
+      
+        
+        <h2 id="productparutionfolio">productParutionFolio</h2>
+<pre><code>productParutionFolio(req);
+</code></pre><p>Return Promise <code>{ &#39;productIdx&#39;: productIdx, &#39;parutionIdx&#39;: parutionIdx, &#39;folioIdx&#39;: folioIdx }</code></p>
+
+        
+          <div class='highlight'><pre><span class="hljs-comment">/**
+ * [productParutionFolio return object with Product &amp; Parution index &amp; Folio index]
+ * @method productParutionFolio
+ * @param  {object}        req [request]
+ * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }]
+ */</span>
+lib.productParutionFolio = <span class="hljs-function">(<span class="hljs-params">req</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    lib.productIdx(req.params.produit)
+      .then(<span class="hljs-function"><span class="hljs-params">productIdx</span> =&gt;</span> {
+        lib.parutionIdx(productIdx, req)
+          .then(<span class="hljs-function"><span class="hljs-params">parutionIdx</span> =&gt;</span> {
+            lib.folioIdx(productIdx, parutionIdx, req)
+              .then(<span class="hljs-function"><span class="hljs-params">folioIdx</span> =&gt;</span> {
+                resolve({ <span class="hljs-string">'productIdx'</span>: productIdx, <span class="hljs-string">'parutionIdx'</span>: parutionIdx, <span class="hljs-string">'folioIdx'</span>: folioIdx });
+              })
+              .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> reject(err));
+          })
+          .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> reject(err));
+      })
+      .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> reject(err));
+  });
+};</pre></div>
+        
+      
+        
+        <h1 id="export-lib-debug-support">EXPORT LIB // DEBUG SUPPORT</h1>
+
+        
+          <div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = lib;</pre></div>
+        
+      
+        
+        <p>if (require.resolve(‘mongoose’)) reject(‘err : mongoose require ‘);</p>
+
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

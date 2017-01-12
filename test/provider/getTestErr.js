@@ -1,34 +1,55 @@
+// INIT FILE SETUP
+// =============================================================================
+// - use strict option
 "use strict";
+// init return array
 let getTestErr = [];
+// CONST DECLARATION
+// =============================================================================
+// Err path
 const errTest = ["/err"];
+// Define product array you want to test ["/sli", "/ewe",...]
 const productArr = ["/sli"];
+// Define parution array you want to test ["/20160101", "/20160102",...]
 const parutionArr = ["/20160101"];
+// Define folio array you want to test ["/01", "/02",...]
 const folioArr = ["/01"];
-// const productArr = ["/sli", "/ewe"];
-// const parutionArr = ["/20160101", "/20160102"];
-// const folioArr = ["/01", "/02"];
+// - Origin path
 const oriPath = "/api";
+// - Product path
 const produitPath = "/produit";
+// - Parution path
 const parutionPath = "/parution";
+// - Folio path
 const folioPath = "/folio";
+// - status path
 const statusPath = "/status";
+// - alpha path
 const alphaPath = oriPath + produitPath;
-
+// FUNCTION
+// =============================================================================
+/**
+ * [return a array off 'path' to test]
+ * @method makeListing
+ * @return {Object}    ['stringPath',...]
+ */
 function makeListing() {
+  // PRODUIT
+  // -----
   // '/api/produit/ERR'
   getTestErr.push(oriPath + produitPath + errTest);
   for (let a = 0; a < productArr.length; a++) {
+    // PARUTION
+    // -----
     for (let b = 0; b < parutionArr.length; b++) {
-      // PARUTION
-      // -----
       // '/api/produit/ERR/parution'
       getTestErr.push(alphaPath + errTest + parutionPath);
       // '/api/produit/sli/parution/ERR'
       getTestErr.push(alphaPath + productArr[a] + parutionPath + errTest);
+      // FOLIOS
+      // -----
+      // '/api/produit/sli/parution/ERR/folio'
       for (let c = 0; c < folioArr.length; c++) {
-        // FOLIOS
-        // -----
-        // '/api/produit/sli/parution/ERR/folio'
         getTestErr.push(alphaPath + productArr[a] + parutionPath + errTest + folioPath);
         // PAGES
         // -----
@@ -38,14 +59,7 @@ function makeListing() {
     }
   }
 }
+// RETURN
+// =============================================================================
 makeListing();
-console.log(getTestErr);
-// return example
-// ----
-// `[ '/api/produit/err',
-//   '/api/produit/err/parution',
-//   '/api/produit/sli/parution/err',
-//   '/api/produit/sli/parution/err/folio',
-//   '/api/produit/sli/parution/20160101/folio/err',
-//   '/api/produit/err/parution/err/folio/01/status' ]`
 module.exports = getTestErr;
