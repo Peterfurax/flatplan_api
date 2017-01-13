@@ -3,11 +3,11 @@
 // - use strict option
 "use strict";
 let getTest = [];
-// Define product array you want to test ["/sli", "/ewe",...]
+// - Define product array you want to test ["/sli", "/ewe",...]
 const productArr = ["/sli", "/ewe"];
-// Define parution array you want to test ["/20160101", "/20160102",...]
+// - Define parution array you want to test ["/20160101", "/20160102",...]
 const parutionArr = ["/20160101", "/20160102"];
-// Define folio array you want to test ["/01", "/02",...]
+// - Define folio array you want to test ["/01", "/02",...]
 const folioArr = ["/01"];
 // - Origin path
 const oriPath = "/api";
@@ -56,8 +56,8 @@ function makeListing() {
   }
 }
 makeListing();
-// console.log(getTest);
-// [ '/api/produit',
+// - console.log(getTest);
+// -  [ '/api/produit',
 //   '/api/produit/sli',
 //   '/api/produit/sli/parution',
 //   '/api/produit/sli/parution/20160101',
