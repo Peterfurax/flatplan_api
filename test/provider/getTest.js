@@ -3,19 +3,28 @@
 // - use strict option
 "use strict";
 let getTest = [];
+// - Define product array you want to test ["/sli", "/ewe",...]
 const productArr = ["/sli", "/ewe"];
+// - Define parution array you want to test ["/20160101", "/20160102",...]
 const parutionArr = ["/20160101", "/20160102"];
-const folioArr = ["/01", "/02"];
+// - Define folio array you want to test ["/01", "/02",...]
+const folioArr = ["/01"];
+// - Origin path
 const oriPath = "/api";
+// - Product path
 const produitPath = "/produit";
+// - Parution path
 const parutionPath = "/parution";
+// - Folio path
 const folioPath = "/folio";
+// - Status path
 const statusPath = "/status";
+// - Alpha path
 const alphaPath = oriPath + produitPath;
 // FUNCTION
 // =============================================================================
 /**
- * [make a Listing test path]
+ * [return a Listing test path]
  * @method makeListing
  * @return {Object}    ['stringPath',...]
  */
@@ -47,8 +56,8 @@ function makeListing() {
   }
 }
 makeListing();
-// console.log(getTest);
-// [ '/api/produit',
+// - console.log(getTest);
+// -  [ '/api/produit',
 //   '/api/produit/sli',
 //   '/api/produit/sli/parution',
 //   '/api/produit/sli/parution/20160101',

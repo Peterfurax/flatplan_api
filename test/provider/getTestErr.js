@@ -22,9 +22,9 @@ const produitPath = "/produit";
 const parutionPath = "/parution";
 // - Folio path
 const folioPath = "/folio";
-// - status path
+// - Status path
 const statusPath = "/status";
-// - alpha path
+// - Alpha path
 const alphaPath = oriPath + produitPath;
 // FUNCTION
 // =============================================================================
