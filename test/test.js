@@ -143,7 +143,8 @@ const testPutArr = [
 '/api/produit/sli',
 '/api/produit/sli/parution/20160101',
 '/api/produit/sli/parution/20160101/folio/01',
-'/api/produit/sli/parution/20160101/folio/01/status/newStatus'];
+'/api/produit/sli/parution/20160101/folio/01/status/newStatus'
+];
 
 function putTest() {
   for (var i = 0; i < testPutArr.length; i++) {

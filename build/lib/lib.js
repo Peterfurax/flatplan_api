@@ -15,10 +15,18 @@ var lib = [];
 //     productIdx(product);
 // Return Promise find index from `product:string`
 /**
- * [Return index product]
+ * Return Promise find index from `product:string`
  * @method productIdx
  * @param  {string}   product [product]
  * @return {Promise}          [index product]
+ * @example
+ * productIdx(product)
+ * .then(result=>{
+ *   console.log(result); // index
+ * })
+ * .catch(err=>{
+ *   console.log(err); // "lib.productIdx() => Product index not found "
+ * });
  */
 lib.productIdx = function (product) {
   return new Promise(function (resolve, reject) {
@@ -36,11 +44,19 @@ lib.productIdx = function (product) {
 //     parutionIdx(productIdx, req);
 // Return Promise find req.params.parution index from `productIdx:number`
 /**
- * [Return index parution for index product]
+ * Return index parution for index product
  * @method parutionIdx
  * @param  {number}    productIdx [index product]
- * @param  {object}    req        [httprequest for inject0 req.params.parution]
+ * @param  {object}    req        [httprequest for inject req.params.parution]
  * @return {Promise}              [index parution]
+ * @example
+ * parutionIdx(productIdx(product), req)
+ * .then(result=>{
+ *   console.log(result); // index
+ * })
+ * .catch(err=>{
+ *   console.log(err); // "lib.parutionIdx() => Parution index not found "
+ * });
  */
 lib.parutionIdx = function (productIdx, req) {
   return new Promise(function (resolve, reject) {
@@ -58,12 +74,20 @@ lib.parutionIdx = function (productIdx, req) {
 //     folioIdx(productIdx,parutionIdx, req);
 // Return Promise find req.params.folio index from` `productIdx:number ` && `parutionIdx:number `
 /**
- * [Return return index folio for index product & index parution]
+ * Return return index folio for index product & index parution
  * @method folioIdx
  * @param  {number} productIdx  [index product]
  * @param  {number} parutionIdx [index parution]
  * @param  {object} req         [httprequest req.params.folio ]
  * @return {Promise}            [index folio]
+ * @example
+ * folioIdx(productIdx(product),parutionIdx(productIdx(product)), req)
+ * .then(result=>{
+ *   console.log(result); // index
+ * })
+ * .catch(err=>{
+ *   console.log(err); // "lib.folioIdx() => folio index not found "
+ * });
  */
 lib.folioIdx = function (productIdx, parutionIdx, req) {
   return new Promise(function (resolve, reject) {
@@ -81,10 +105,18 @@ lib.folioIdx = function (productIdx, parutionIdx, req) {
 //     productParution(req);
 // Return Promise `{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }`
 /**
- * [productParution return object with Product et Parution index]
+ * productParution return object with Product et Parution index
  * @method productParution
  * @param  {object}        req [request]
- * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }]
+ * @return {Promise}           [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx }]
+ * @example
+ * productParution(req)
+ * .then(result=>{
+ *   console.log(result); // { 'productIdx': productIdx, 'parutionIdx': parutionIdx }
+ * })
+ * .catch(err=>{
+ *   console.log(err); // Promise.reject(err)
+ * });
  */
 lib.productParution = function (req) {
   return new Promise(function (resolve, reject) {
@@ -107,7 +139,15 @@ lib.productParution = function (req) {
  * [productParutionFolio return object with Product & Parution index & Folio index]
  * @method productParutionFolio
  * @param  {object}        req [request]
- * @return {object}            [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }]
+ * @return {Promise}           [{ 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }]
+ * @example
+ * productParutionFolio(req)
+ * .then(result=>{
+ *   console.log(result); // { 'productIdx': productIdx, 'parutionIdx': parutionIdx, 'folioIdx': folioIdx }
+ * })
+ * .catch(err=>{
+ *   console.log(err); // Promise.reject(err)
+ * });
  */
 lib.productParutionFolio = function (req) {
   return new Promise(function (resolve, reject) {

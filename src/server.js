@@ -35,9 +35,9 @@ app.set('json spaces', 2);
 //  2. return a `json` with `err` => `res.json(err);``
 /**
  * @method errEnd
- * @param  {[any]}   err [captured error]
- * @param  {[array]} res [captured http res]
- * @return {[json]}      [return http json]
+ * @param  {any}   err [captured error]
+ * @param  {array} res [captured http res]
+ * @return {json}      [return http json]
  */
 function errEnd(err, res) {
   res.status(400)

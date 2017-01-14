@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>test.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>test.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre><span class="hljs-meta">"use strict"</span>;
+<span class="hljs-comment">/*jslint node: true */</span>
+<span class="hljs-comment">/*jshint esversion: 6 */</span>
+<span class="hljs-comment">/*jshint expr: true */</span>
+<span class="hljs-comment">/*jshint loopfunc: true */</span></pre></div>
+        
+      
+        
+        <p>Require the dev-dependencies</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> chai = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chai'</span>);
+<span class="hljs-keyword">const</span> chaiHttp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chai-http'</span>);
+<span class="hljs-keyword">const</span> server = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../dist/server.js'</span>);
+<span class="hljs-keyword">const</span> getTest = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./provider/getTest'</span>);
+<span class="hljs-keyword">const</span> getTestErr = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./provider/getTestErr'</span>);
+<span class="hljs-keyword">const</span> should = chai.should();
+<span class="hljs-keyword">let</span> logData = [];
+<span class="hljs-keyword">let</span> counter = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">const</span> testGetArr = getTest;
+<span class="hljs-keyword">const</span> testGetArrErr = getTestErr;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">logger</span>(<span class="hljs-params">mess</span>) </span>{
+  counter += <span class="hljs-number">1</span>;
+  logData.push({
+    <span class="hljs-attr">counter</span>: mess
+  });
+  <span class="hljs-built_in">console</span>.log(counter);</pre></div>
+        
+      
+        
+        <p>console.log(logData);</p>
+
+        
+          <div class='highlight'><pre>}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">statusHttp</span>(<span class="hljs-params">uri, httpReponseCode</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> httpReponseCode !== <span class="hljs-string">'number'</span>) {
+      reject(<span class="hljs-string">'http code must be a number'</span>);
+    }
+    it(<span class="hljs-string">'Http status res '</span> + httpReponseCode + <span class="hljs-string">''</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          resolve(res.should.have.status(httpReponseCode));
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">putT</span>(<span class="hljs-params">uri</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should be json'</span>, (done) =&gt; {
+      chai.request(server)
+        .put(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.should.be.json);
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beJson</span>(<span class="hljs-params">uri</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should be json'</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.should.be.json);
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">beObject</span>(<span class="hljs-params">uri</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should be objet'</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.body.should.be.a(<span class="hljs-string">'object'</span>));
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">keyIsString</span>(<span class="hljs-params">uri</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should body.message is string'</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.body.message.should.be.a(<span class="hljs-string">'string'</span>));
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bodyHaveProperty</span>(<span class="hljs-params">uri, waitProperty</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should have property '</span> + waitProperty + <span class="hljs-string">''</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.body.should.have.property(waitProperty));
+          done();
+        });
+    });
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stringIsEqual</span>(<span class="hljs-params">uri, waitingMessage</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    it(<span class="hljs-string">'should message equal = '</span> + waitingMessage + <span class="hljs-string">''</span>, (done) =&gt; {
+      chai.request(server)
+        .get(uri)
+        .end(<span class="hljs-function">(<span class="hljs-params">err, res</span>) =&gt;</span> {
+          <span class="hljs-keyword">if</span> (err) {
+            reject(err);
+          }
+          resolve(res.body.message.should.equal(waitingMessage));
+          done();
+        });
+    });
+  });
+}
+<span class="hljs-keyword">const</span> httpStatus = <span class="hljs-number">200</span>;
+<span class="hljs-keyword">const</span> httpStatusErr = <span class="hljs-number">400</span>;
+<span class="hljs-keyword">const</span> httpStatusDrop = <span class="hljs-number">404</span>;
+<span class="hljs-keyword">const</span> welcomeMessage = <span class="hljs-string">'Welcome on flatplan_api !'</span>;
+<span class="hljs-keyword">const</span> testPutArr = [
+<span class="hljs-string">'/api/produit/sli'</span>,
+<span class="hljs-string">'/api/produit/sli/parution/20160101'</span>,
+<span class="hljs-string">'/api/produit/sli/parution/20160101/folio/01'</span>,
+<span class="hljs-string">'/api/produit/sli/parution/20160101/folio/01/status/newStatus'</span>
+];
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">putTest</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; testPutArr.length; i++) {
+    <span class="hljs-keyword">const</span> uri = testPutArr[i];
+    describe(uri, () =&gt; {
+      <span class="hljs-built_in">Promise</span>.all([
+        putT(uri)
+      ])
+        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+        .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTestArr</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; testGetArr.length; i++) {
+    <span class="hljs-keyword">const</span> uri = testGetArr[i];
+    describe(uri, () =&gt; {
+      <span class="hljs-built_in">Promise</span>.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri)
+      ])
+        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+        .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+    });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTestErrArr</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; testGetArrErr.length; i++) {
+    <span class="hljs-keyword">const</span> uri = testGetArrErr[i];
+    describe(uri, () =&gt; {
+      <span class="hljs-built_in">Promise</span>.all([
+        statusHttp(uri, httpStatusErr),
+        beJson(uri)
+      ])
+        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+        .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+    });
+  }
+}</pre></div>
+        
+      
+        
+        <p>During the test the env variable is set to test</p>
+
+        
+          <div class='highlight'><pre>process.env.NODE_ENV = <span class="hljs-string">'test'</span>;</pre></div>
+        
+      
+        
+        <p>Chai use</p>
+
+        
+          <div class='highlight'><pre>chai.use(chaiHttp);
+describe(<span class="hljs-string">'Api response '</span>, () =&gt; {
+  describe(<span class="hljs-string">'#PATH'</span>, () =&gt; {
+    describe(<span class="hljs-string">'#/'</span>, () =&gt; {
+      statusHttp(<span class="hljs-string">'/'</span>, httpStatusDrop)
+        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+        .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+    });
+    describe(<span class="hljs-string">'#/api'</span>, () =&gt; {
+      <span class="hljs-keyword">const</span> uri = <span class="hljs-string">'/api'</span>;
+      <span class="hljs-keyword">const</span> waitRep = <span class="hljs-string">'message'</span>;
+      <span class="hljs-built_in">Promise</span>.all([
+        statusHttp(uri, httpStatus),
+        beJson(uri),
+        beObject(uri),
+        keyIsString(uri),
+        bodyHaveProperty(uri, waitRep),
+        stringIsEqual(uri, welcomeMessage)
+      ])
+        .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+        .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+    });
+    <span class="hljs-built_in">Promise</span>.all([
+      getTestArr(),
+      getTestErrArr(),
+      putTest()
+    ])
+      .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> logger(result), err =&gt; logger(err))
+      .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> logger(err));
+  });
+});</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
