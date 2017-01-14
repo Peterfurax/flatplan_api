@@ -1,0 +1,1 @@
+"use strict";var recluster=require("recluster"),path=require("path"),cluster=recluster(path.join(__dirname,"server.js"));cluster.run(),process.on("SIGUSR2",function(){cluster.reload()});
