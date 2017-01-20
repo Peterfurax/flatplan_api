@@ -43,7 +43,6 @@ function errEnd(err, res) {
   res.status(400)
     .json({ "err": err });
 }
-// TODO: capture all put
 // temp fonction
 function capturePut(req, res) {
   console.log(req.params);
@@ -115,7 +114,6 @@ router.route('/produit/:produit/parution/:parution/folio')
   });
 // /produit/:produit/parution/:parution/folio/:folio
 // -----
-// TODO: find good wa
 router.route('/produit/:produit/parution/:parution/folio/:folio')
   .get((req, res) => {
     lib.productParutionFolio(req)

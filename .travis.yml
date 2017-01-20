@@ -1,3 +1,6 @@
+addons:
+    code_climate:
+        repo_token: 887f2b48fc07c69f5ea0fb40b01b9b75a075811d8abaf9e9aa8962db5778f4c2
 sudo: false
 notifications:
   email: true
