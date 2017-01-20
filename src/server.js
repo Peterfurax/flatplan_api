@@ -14,7 +14,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const lib = require('./lib/lib');
 const dataFile = require('./provider/data');
-const data = dataFile;
+let data = dataFile;
 const port = process.env.PORT || 8e3;
 const router = express.Router();
 // - Configure `app` to use `bodyParser()`
@@ -127,7 +127,7 @@ router.route('/produit/:produit/parution/:parution/folio/:folio')
     lib.productParutionFolio(req)
       .then(result => {
         data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].page = req.params.folio;
-        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx]);
+        res.json('ok');
       })
       .catch(err => { errEnd(err); });
   });
@@ -150,7 +150,7 @@ router.route('/produit/:produit/parution/:parution/folio/:folio/status/:status')
     lib.productParutionFolio(req)
       .then(result => {
         data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].status = req.params.status;
-        res.json(data[result.productIdx].parution[result.parutionIdx].folio[result.folioIdx].status);
+        res.json('ok');
       })
       .catch(err => { errEnd(err); });
   });
