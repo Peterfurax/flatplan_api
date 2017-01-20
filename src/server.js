@@ -12,8 +12,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const dataFile = require('./provider/data');
 const lib = require('./lib/lib');
+const dataFile = require('./provider/data');
 const data = dataFile;
 const port = process.env.PORT || 8e3;
 const router = express.Router();
