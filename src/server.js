@@ -166,16 +166,3 @@ console.log('Magic happens on port ' + port);
 // DEBUG SUPPORT
 // =============================================================================
 module.exports = app;
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// easter eggs
-// router.route('/eggs', (req, res) => {
-//  res.redirect('https://www.youtube.com/watch?v=3Yfy_QIgpsc');
-// });
