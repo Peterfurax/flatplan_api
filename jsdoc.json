@@ -15,7 +15,7 @@
     "verbose": true
   },
   "templates": {
-    "cleverLinks": false,
+    "cleverLinks": true,
     "monospaceLinks": false
   }
 }
