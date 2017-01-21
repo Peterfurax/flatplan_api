@@ -46,10 +46,7 @@ function putT(uri) {
       chai.request(server)
         .put(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.should.be.json);
+          err ? reject(err) : resolve(res.should.be.json);
           done();
         });
     });
@@ -62,10 +59,7 @@ function beJson(uri) {
       chai.request(server)
         .get(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.should.be.json);
+          err ? reject(err) : resolve(res.should.be.json);
           done();
         });
     });
@@ -78,10 +72,7 @@ function beObject(uri) {
       chai.request(server)
         .get(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.body.should.be.a('object'));
+          err ? reject(err) : resolve(res.body.should.be.a('object'));
           done();
         });
     });
@@ -94,10 +85,7 @@ function keyIsString(uri) {
       chai.request(server)
         .get(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.body.message.should.be.a('string'));
+          err ? reject(err) : resolve(res.body.message.should.be.a('string'));
           done();
         });
     });
@@ -110,10 +98,7 @@ function bodyHaveProperty(uri, waitProperty) {
       chai.request(server)
         .get(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.body.should.have.property(waitProperty));
+          err ? reject(err) : resolve(res.body.should.have.property(waitProperty));
           done();
         });
     });
@@ -126,10 +111,7 @@ function stringIsEqual(uri, waitingMessage) {
       chai.request(server)
         .get(uri)
         .end((err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.body.message.should.equal(waitingMessage));
+          err ? reject(err) : resolve(res.body.message.should.equal(waitingMessage));
           done();
         });
     });
